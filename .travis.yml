@@ -1,0 +1,22 @@
+sudo : required
+services:
+  - docker
+before_install :
+  - docker build -t anurav/react-trial -f ./client/Dockerfile.dev
+
+script:
+  - docker run anurav/react-trial npm test -- --coverage
+
+after_success:
+  - docker build -t anurav/multi-client ./client
+  - docker build -t anurav/multi-nginx ./nginx
+  - docker build -t anurav/multi-server ./server
+  - docker build -t anurav/multi-worker ./worker
+  # LOG in to docker hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Take those images and push them to docker_hub
+  - docker push anurav/multi-client
+  - docker push anurav/multi-nginx
+  - docker push anurav/multi-server
+  - docker push anurav/multi-worker
