@@ -13,7 +13,7 @@ after_success:
   - docker build -t anurav/multi-server ./server
   - docker build -t anurav/multi-worker ./worker
   # LOG in to docker hub
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASSSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
   # Take those images and push them to docker_hub
   - docker push anurav/multi-client
